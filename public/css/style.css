@@ -1,0 +1,184 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  width: 80px;
+  height: 80px;
+  margin: 5px;
+  background-color: #eaeaea;
+  border: solid;
+  border-color: black;
+  border-width: 2px;
+  box-shadow: 5px 5px rgb(145, 145, 145);
+  /* border: none;
+  border-radius: 4px; */
+  text-align: center;
+  line-height: 40px;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.button:active {
+  transform: translateY(4px);
+}
+
+.p1input {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  margin-right: 15px;
+  font-size: xx-large;
+  font-weight: bold;
+  background-color: rgb(98, 182, 252);
+  border-radius: 10px;
+}
+
+.p2input {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  margin-left: 15px;
+  font-size: xx-large;
+  font-weight: bold;
+  background-color: rgb(98, 252, 119);
+  border-radius: 10px;
+}
+
+.p1label {
+  text-align: center;
+  border: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 15px;
+  padding: 10px;
+  height: 55px;
+  width: 65px;
+  margin-right: 15px;
+  background-color: rgb(98, 182, 252);
+}
+
+.p2label {
+  text-align: center;
+  border: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 15px;
+  padding: 10px;
+  height: 55px;
+  width: 65px;
+  margin-left: 15px;
+  background-color: rgb(98, 252, 119);
+}
+
+.game-table {
+  background-color: bisque;
+}
+
+#btn0,
+#btn1,
+#btn2,
+#btn3,
+#btn4,
+#btn5 {
+  background-color: rgb(98, 182, 252);
+  border-radius: 40px;
+}
+
+#btn6,
+#btn7,
+#btn8,
+#btn9,
+#btn10,
+#btn11 {
+  background-color: rgb(98, 252, 119);
+  border-radius: 40px;
+}
+
+label {
+  font-size: large;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+#game-notes {
+  margin-top: 10px;
+  width: 700px;
+  text-align: center;
+  font-size: larger;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.input-container {
+  text-align: center;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center; /* Center the content horizontally */
+  display: flex; /* Enable vertical centering */
+  flex-direction: column; /* Stack the child elements vertically */
+  justify-content: center; /* Center the child elements vertically */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#game-notes-modal-winner {
+  text-align: center;
+  font-size: larger;
+  font-weight: bold;
+}
+
+#game-notes-modal-loser {
+  text-align: center;
+  font-size: medium;
+}
+
+#countdown {
+  font-size: larger;
+  font-weight: bold;
+}
+
+#endGame {
+  margin-top: 15px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: larger;
+}
