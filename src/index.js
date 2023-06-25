@@ -252,14 +252,36 @@ const generateGameOverMessages = () => {
   }
 }
 
+const verifyActivePlayer = () => {
+
+  if (playerOneIsPlaying) {
+    const playerVisiblePits = 'players visible only';
+    const allPitsLocked = 'waiting for the other player';
+    io.to(connectedSockets[0]).emit('lockP1Pits', playerVisiblePits);
+    io.to(connectedSockets[1]).emit('lockP2Pits', allPitsLocked);
+  } else {
+    const playerVisiblePits = 'players visible only';
+    const allPitsLocked = 'waiting for the other player';
+    io.to(connectedSockets[0]).emit('lockP1Pits', allPitsLocked);
+    io.to(connectedSockets[1]).emit('lockP2Pits', playerVisiblePits);
+  }
+}
+
 app.use(express.static(publicDirPath));
 
 io.on('connection', (socket) => {
-  //console.log(`New WebSocket connection ${socket.id}`);
+  console.log(`New WebSocket connection ${socket.id}`);
 
   connectedSockets.push(socket.id);
 
+  if (connectedSockets.length > 2) {
+    socket.emit('gameFull', 'full');
+    return
+  }
+
   socket.emit('gameState', { tableData, p1Score, p2Score, flagEmptyP1, flagEmptyP2, round, gameOver, playsAgain, playerOneIsPlaying, previousIdPlayed, message, connectedSockets });
+
+  verifyActivePlayer();
 
   socket.on('playerSelection', (clickedId) => {
     round++;
@@ -268,6 +290,8 @@ io.on('connection', (socket) => {
     checkAndSetPlayerScores(playerOneIsPlaying, clickedId, seedsOnSelectedPit);
     checkAndSetSeedsToPits(playerOneIsPlaying, clickedId, seedsOnSelectedPit);
     setPlayerTurn(round);
+
+    console.log(playerOneIsPlaying);
 
     gameOver ? generateGameOverMessages() : 'Continue';
 
@@ -311,6 +335,8 @@ io.on('connection', (socket) => {
 
       createTable();
     }
+
+    verifyActivePlayer();
 
     io.emit('played', dataAccessObject);
   })
