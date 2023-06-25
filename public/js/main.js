@@ -11,6 +11,16 @@ const modal = document.getElementById("myModal");
 const countdownElement = document.getElementById("countdown");
 const endGameBtn = document.getElementById("endGame");
 
+socket.on('gameFull', (data) => {
+  gameNotesText.value = 'Game room is full. Try again later';
+  for (let i = 1; i < 7; i++) {
+    playersElements[0].children[i].setAttribute('disabled', '');
+  }
+  for (let i = 1; i < 7; i++) {
+    playersElements[1].children[i].setAttribute('disabled', '');
+  }
+})
+
 socket.on('gameState', (data) => {
   //console.log(data);
   const updateUI = () => {
@@ -27,52 +37,49 @@ socket.on('gameState', (data) => {
 
   updateUI();
 
-  const lockOppositePlayerPits = (playerOneIsPlaying) => {
-    if (playerOneIsPlaying) {
-      for (let i = 1; i < 7; i++) {
-        playersElements[0].children[i].removeAttribute('disabled');
-      }
-      for (let i = 1; i < 7; i++) {
-        playersElements[1].children[i].setAttribute('disabled', '');
-      }
-    } else {
-      for (let i = 1; i < 7; i++) {
-        playersElements[1].children[i].removeAttribute('disabled');
-      }
-      for (let i = 1; i < 7; i++) {
-        playersElements[0].children[i].setAttribute('disabled', '');
+  socket.on('lockP1Pits', (data) => {
+    const lockOppositePlayerPits = () => {
+      if (data === 'players visible only') {
+        for (let i = 1; i < 7; i++) {
+          playersElements[0].children[i].removeAttribute('disabled');
+        }
+        for (let i = 1; i < 7; i++) {
+          playersElements[1].children[i].setAttribute('disabled', '');
+        }
+      } else {
+        for (let i = 1; i < 7; i++) {
+          playersElements[0].children[i].setAttribute('disabled', '');
+        }
+        for (let i = 1; i < 7; i++) {
+          playersElements[1].children[i].setAttribute('disabled', '');
+        }
       }
     }
-  }
 
-  lockOppositePlayerPits(data.playerOneIsPlaying);
+    lockOppositePlayerPits();
+  })
 
-  // const lockOppositePlayerPits = () => {
-  //   if (data.connectedSockets.length === 1) {
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[0].children[i].removeAttribute('disabled');
-  //     }
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[1].children[i].setAttribute('disabled', '');
-  //     }
-  //   } else if (data.connectedSockets.length === 2) {
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[1].children[i].removeAttribute('disabled');
-  //     }
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[0].children[i].setAttribute('disabled', '');
-  //     }
-  //   } else {
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[0].children[i].setAttribute('disabled', '');
-  //     }
-  //     for (let i = 1; i < 7; i++) {
-  //       playersElements[1].children[i].setAttribute('disabled', '');
-  //     }
-  //   }
-  // }
+  socket.on('lockP2Pits', (data) => {
+    const lockOppositePlayerPits = () => {
+      if (data === 'players visible only') {
+        for (let i = 1; i < 7; i++) {
+          playersElements[1].children[i].removeAttribute('disabled');
+        }
+        for (let i = 1; i < 7; i++) {
+          playersElements[0].children[i].setAttribute('disabled', '');
+        }
+      } else {
+        for (let i = 1; i < 7; i++) {
+          playersElements[0].children[i].setAttribute('disabled', '');
+        }
+        for (let i = 1; i < 7; i++) {
+          playersElements[1].children[i].setAttribute('disabled', '');
+        }
+      }
+    }
 
-  // lockOppositePlayerPits();
+    lockOppositePlayerPits();
+  })
 });
 
 const getClick = (e) => {
@@ -91,6 +98,7 @@ socket.on('refresh', () => {
 })
 
 socket.on('played', data => {
+  console.log(data);
 
   const updateUI = () => {
     for (let i = 1; i < 7; i++) {
@@ -101,53 +109,49 @@ socket.on('played', data => {
     p1TextInput.value = data.p1Score;
     p2TextInput.value = data.p2Score;
 
-    const lockOppositePlayerPits = (playerOneIsPlaying) => {
-      if (playerOneIsPlaying) {
-        for (let i = 1; i < 7; i++) {
-          playersElements[0].children[i].removeAttribute('disabled');
-        }
-        for (let i = 1; i < 7; i++) {
-          playersElements[1].children[i].setAttribute('disabled', '');
-        }
-      } else {
-        for (let i = 1; i < 7; i++) {
-          playersElements[1].children[i].removeAttribute('disabled');
-        }
-        for (let i = 1; i < 7; i++) {
-          playersElements[0].children[i].setAttribute('disabled', '');
+    socket.on('lockP1Pits', (data) => {
+      const lockOppositePlayerPits = () => {
+        if (data === 'players visible only') {
+          for (let i = 1; i < 7; i++) {
+            playersElements[0].children[i].removeAttribute('disabled');
+          }
+          for (let i = 1; i < 7; i++) {
+            playersElements[1].children[i].setAttribute('disabled', '');
+          }
+        } else {
+          for (let i = 1; i < 7; i++) {
+            playersElements[0].children[i].setAttribute('disabled', '');
+          }
+          for (let i = 1; i < 7; i++) {
+            playersElements[1].children[i].setAttribute('disabled', '');
+          }
         }
       }
-    }
 
-    lockOppositePlayerPits(data.playerOneIsPlaying);
+      lockOppositePlayerPits();
+    })
 
-    // const lockOppositePlayerPits = () => {
-    //   console.log(data.connectedSockets);
-    //   if (data.connectedSockets.length === 1) {
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[0].children[i].removeAttribute('disabled');
-    //     }
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[1].children[i].setAttribute('disabled', '');
-    //     }
-    //   } else if (data.connectedSockets.length === 2) {
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[1].children[i].removeAttribute('disabled');
-    //     }
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[0].children[i].setAttribute('disabled', '');
-    //     }
-    //   } else {
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[0].children[i].setAttribute('disabled', '');
-    //     }
-    //     for (let i = 1; i < 7; i++) {
-    //       playersElements[1].children[i].setAttribute('disabled', '');
-    //     }
-    //   }
-    // }
+    socket.on('lockP2Pits', (data) => {
+      const lockOppositePlayerPits = () => {
+        if (data === 'players visible only') {
+          for (let i = 1; i < 7; i++) {
+            playersElements[1].children[i].removeAttribute('disabled');
+          }
+          for (let i = 1; i < 7; i++) {
+            playersElements[0].children[i].setAttribute('disabled', '');
+          }
+        } else {
+          for (let i = 1; i < 7; i++) {
+            playersElements[0].children[i].setAttribute('disabled', '');
+          }
+          for (let i = 1; i < 7; i++) {
+            playersElements[1].children[i].setAttribute('disabled', '');
+          }
+        }
+      }
 
-    // lockOppositePlayerPits();
+      lockOppositePlayerPits();
+    })
 
     gameNotesText.value = data.message;
 
@@ -183,7 +187,7 @@ socket.on('played', data => {
 
   updateUI();
 
-})
+});
 
 window.onclick = function (event) {
   if (event.target == modal) {
