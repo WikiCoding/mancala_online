@@ -22,7 +22,7 @@ socket.on('gameFull', (data) => {
 })
 
 socket.on('gameState', (data) => {
-  //console.log(data);
+
   const updateUI = () => {
     for (let i = 1; i < 7; i++) {
       playersElements[0].children[i].innerHTML = data.tableData[i - 1].seeds;
@@ -98,7 +98,7 @@ socket.on('refresh', () => {
 })
 
 socket.on('played', data => {
-  console.log(data);
+
 
   const updateUI = () => {
     for (let i = 1; i < 7; i++) {
