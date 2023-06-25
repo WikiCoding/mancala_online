@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const connectedSockets = [];
+let connectedSockets = [];
 
 // game state
 let p1Score = 0;
@@ -276,6 +276,7 @@ io.on('connection', (socket) => {
 
   if (connectedSockets.length > 2) {
     socket.emit('gameFull', 'full');
+    connectedSockets = connectedSockets.filter(s => s !== socket.id);
     return
   }
 
@@ -290,8 +291,6 @@ io.on('connection', (socket) => {
     checkAndSetPlayerScores(playerOneIsPlaying, clickedId, seedsOnSelectedPit);
     checkAndSetSeedsToPits(playerOneIsPlaying, clickedId, seedsOnSelectedPit);
     setPlayerTurn(round);
-
-    console.log(playerOneIsPlaying);
 
     gameOver ? generateGameOverMessages() : 'Continue';
 
@@ -381,8 +380,9 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () => {
-    //console.log("A user disconnected!");
-    connectedSockets.pop();
+    console.log("A user disconnected!");
+
+    connectedSockets = connectedSockets.filter(s => s !== socket.id);
   })
 })
 
